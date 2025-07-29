@@ -1,0 +1,14 @@
+<nav class="sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-md border-b border-gray-200 dark:border-gray-700">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-center space-x-1 md:space-x-4 py-3 overflow-x-auto">
+        @for (link of navLinks; track link.anchor) {
+          <button 
+            (click)="scrollToSection(link.anchor)"
+            class="btn-secondary whitespace-nowrap text-sm md:text-base"
+          >
+            {{ link.label }}
+          </button>
+        }
+      </div>
+    </div>
+  </nav> 
