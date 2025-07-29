@@ -1,0 +1,86 @@
+<section id="employee-grid" class="py-8 px-4">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Employee Overview</h2>
+      
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="card">
+          <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Total Employees</h3>
+            <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">{{ employees.length }}</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Average Annual Salary</h3>
+            <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ formatCurrency(getAverageAnnualSalary()) }}</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">Average Hourly Rate</h3>
+            <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ formatCurrency(getAverageHourlyRate()) }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Employee Table -->
+      <div class="card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="table-header">
+                @for (column of displayedColumns; track column) {
+                  <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">{{ column }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <!-- Show employee data when available -->
+              @for (employee of employees; track employee.id) {
+              <tr class="table-row">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                      <div class="h-10 w-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                        <span class="text-primary-600 dark:text-primary-400 font-semibold text-sm">
+                          {{ employee.firstName.charAt(0) }}{{ employee.lastName.charAt(0) }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900 dark:text-white">{{ employee.fullName }}</div>
+                      <div class="text-sm text-gray-500 dark:text-gray-400">ID: {{ employee.id }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  {{ formatCurrency(employee.annualSalary) }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  {{ formatCurrency(employee.hourlyRate) }}
+                </td>
+              </tr>
+            }
+              <!-- Show no data message when no employees -->
+              <tr *ngIf="employees.length === 0">
+                <td colspan="3" class="px-6 py-12 text-center">
+                  <div class="flex flex-col items-center justify-center">
+                    <div class="text-gray-400 dark:text-gray-500 mb-2">
+                      <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                    </div>
+                    <p class="text-lg font-medium text-gray-500 dark:text-gray-400 mb-1">No Data Available</p>
+                    <p class="text-sm text-gray-400 dark:text-gray-500">No employees found. Please add some employees to see the data.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section> 
