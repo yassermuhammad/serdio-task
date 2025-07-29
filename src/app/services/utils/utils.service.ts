@@ -5,15 +5,21 @@ import { Injectable } from '@angular/core';
 })
 export class UtilsService {
 
-  constructor() { }
-/**
- * Get the initials of a name
- *
- * @param {string} name
- * @return {*}  {string}
- * @memberof UtilsService
- */
-getInitials(name: string): string {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  
+  formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
   }
+
+  formatHourlyRate(rate: number): string {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(rate);
+  }
+  
 }
