@@ -5,11 +5,12 @@ import { HeaderComponent } from '@components/header/header.component';
 import { NavbarComponent } from '@components/navbar/navbar.component';
 import { ProjectChartComponent } from '@components/project-chart/project-chart.component';
 import { ProjectsSummaryComponent } from '@components/projects-summary/projects-summary.component';
+import { YearProjectionComponent } from '@components/year-projection/year-projection.component';
 
 @Component({
   selector: 'sred-ts-root',
   standalone: true,
-  imports: [HeaderComponent, NavbarComponent, EmployeeGridComponent, ProjectChartComponent, ProjectsSummaryComponent],
+  imports: [HeaderComponent, NavbarComponent, EmployeeGridComponent, ProjectChartComponent, ProjectsSummaryComponent, YearProjectionComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
