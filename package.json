@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "doc": "npx compodoc -p tsconfig.doc.json -s -w -o",
     "build:prod": "ng build --configuration production --base-href=/serdio-task/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -30,6 +31,7 @@
     "@angular-devkit/build-angular": "^17.3.11",
     "@angular/cli": "^17.3.11",
     "@angular/compiler-cli": "^17.3.0",
+    "@compodoc/compodoc": "^1.1.26",
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.21",
     "jasmine-core": "~5.1.0",
