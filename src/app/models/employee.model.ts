@@ -1,3 +1,33 @@
+/**
+ * Interface representing an employee in the system.
+ * 
+ * This interface defines the structure for employee data including
+ * personal information, salary details, and hourly rates used
+ * throughout the application for employee management and analytics.
+ * 
+ * @interface Employee
+ * @property {number} id - Unique identifier for the employee
+ * @property {string} firstName - Employee's first name
+ * @property {string} lastName - Employee's last name
+ * @property {string} fullName - Employee's full name (first + last)
+ * @property {number} annualSalary - Annual salary in USD
+ * @property {number} hourlyRate - Hourly rate in USD
+ * 
+ * @example
+ * ```typescript
+ * const employee: Employee = {
+ *   id: 1,
+ *   firstName: 'John',
+ *   lastName: 'Doe',
+ *   fullName: 'John Doe',
+ *   annualSalary: 75000,
+ *   hourlyRate: 36.06
+ * };
+ * ```
+ * 
+ * @author Yasser Abdel-Maksoud
+ * @since 1.0.0
+ */
 export interface Employee {
   id: number;
   firstName: string;
@@ -7,6 +37,32 @@ export interface Employee {
   hourlyRate: number;
 }
 
+/**
+ * Interface representing employee work data for project assignments.
+ * 
+ * This interface defines the structure for tracking employee work
+ * on specific projects, including hours worked and monetary value
+ * generated. Used for project analytics and time tracking.
+ * 
+ * @interface EmployeeWorkData
+ * @property {number} employeeId - Unique identifier for the employee
+ * @property {number} projectId - Unique identifier for the project
+ * @property {number} hoursWorked - Total hours worked on the project
+ * @property {number} monetaryValue - Monetary value generated from the work
+ * 
+ * @example
+ * ```typescript
+ * const workData: EmployeeWorkData = {
+ *   employeeId: 1,
+ *   projectId: 2,
+ *   hoursWorked: 120,
+ *   monetaryValue: 4327.20
+ * };
+ * ```
+ * 
+ * @author Yasser Abdel-Maksoud
+ * @since 1.0.0
+ */
 export interface EmployeeWorkData {
   employeeId: number;
   projectId: number;

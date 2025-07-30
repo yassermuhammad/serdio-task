@@ -2,35 +2,144 @@ import { Injectable } from '@angular/core';
 import { Employee } from '@models/employee.model';
 import { Observable, of } from 'rxjs';
 
+/**
+ * EmployeeService manages employee data and provides methods for
+ * retrieving employee information, calculating averages, and
+ * managing employee-related operations.
+ * 
+ * This service contains mock data for 25 employees with realistic
+ * salary and hourly rate information. It provides methods for
+ * getting employee streams, calculating averages, and finding
+ * specific employees by ID.
+ * 
+ * @example
+ * ```typescript
+ * // Inject the service
+ * constructor(private employeeService: EmployeeService) {}
+ * 
+ * // Get all employees
+ * this.employeeService.getEmployeesStream().subscribe(employees => {
+ *   console.log('Employees:', employees);
+ * });
+ * 
+ * // Get average salary
+ * const avgSalary = this.employeeService.getAverageAnnualSalary();
+ * ```
+ * 
+ * @author Yasser Abdel-Maksoud
+ * @since 1.0.0
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeeService {
+  /**
+   * Initializes the EmployeeService.
+   * 
+   * The constructor initializes the service and loads the employee data.
+   * 
+   * @memberof EmployeeService
+   */
   constructor() {}
 
-  // Mock data for employees
+  /**
+   * Array of employee data loaded from the mock data method.
+   * 
+   * Contains all employee information including personal details,
+   * salary information, and hourly rates for 25 employees.
+   * 
+   * @private
+   * @type {Employee[]}
+   * @memberof EmployeeService
+   */
   private employees: Employee[] = this.getEmployees();
 
-
+  /**
+   * Gets all employees as an observable stream.
+   * 
+   * Returns an observable that emits the complete array of employees.
+   * This method is used by components that need to display or process
+   * employee data reactively.
+   * 
+   * @returns {Observable<Employee[]>} Observable of all employees
+   * @memberof EmployeeService
+   * 
+   * @example
+   * ```typescript
+   * // Subscribe to employee data
+   * this.employeeService.getEmployeesStream().subscribe(employees => {
+   *   this.employees = employees;
+   *   this.updateEmployeeGrid();
+   * });
+   * ```
+   */
   getEmployeesStream(): Observable<Employee[]> {
     return of(this.employees);
   }
 
+  /**
+   * Calculates the average annual salary across all employees.
+   * 
+   * Computes the mean annual salary by summing all employee salaries
+   * and dividing by the total number of employees. Returns 0 if no
+   * employees exist.
+   * 
+   * @returns {number} Average annual salary across all employees
+   * @memberof EmployeeService
+   * 
+   * @example
+   * ```typescript
+   * // Get average salary for analytics
+   * const avgSalary = this.employeeService.getAverageAnnualSalary();
+   * console.log('Average salary:', avgSalary);
+   * // Returns: 81000 (example value)
+   * ```
+   */
   getAverageAnnualSalary(): number {
     if (this.employees.length === 0) return 0;
     return this.employees.reduce((sum, employee) => sum + employee.annualSalary, 0) / this.employees.length;
   }
 
+  /**
+   * Calculates the average hourly rate across all employees.
+   * 
+   * Computes the mean hourly rate by summing all employee hourly rates
+   * and dividing by the total number of employees. Returns 0 if no
+   * employees exist.
+   * 
+   * @returns {number} Average hourly rate across all employees
+   * @memberof EmployeeService
+   * 
+   * @example
+   * ```typescript
+   * // Get average hourly rate for project calculations
+   * const avgRate = this.employeeService.getAverageHourlyRate();
+   * console.log('Average hourly rate:', avgRate);
+   * // Returns: 38.95 (example value)
+   * ```
+   */
   getAverageHourlyRate(): number {
     if (this.employees.length === 0) return 0;
     return this.employees.reduce((sum, employee) => sum + employee.hourlyRate, 0) / this.employees.length;
   }
 
   /**
-   * Mock data for employees
-   *
-   * @return {*}  {Employee[]}
+   * Returns mock data for 25 employees with realistic information.
+   * 
+   * This method provides comprehensive employee data including personal
+   * information, salary details, and hourly rates. The data is used
+   * throughout the application for testing and demonstration purposes.
+   * 
+   * @returns {Employee[]} Array of 25 employee records
    * @memberof EmployeeService
+   * 
+   * @example
+   * ```typescript
+   * // Get employee data
+   * const employees = this.employeeService.getEmployees();
+   * console.log('Total employees:', employees.length);
+   * // Returns: 25
+   * ```
    */
   getEmployees(): Employee[] {
     return [
@@ -237,6 +346,32 @@ export class EmployeeService {
     ];
   }
 
+  /**
+   * Finds an employee by their unique ID.
+   * 
+   * Searches through the employee array to find an employee with
+   * the specified ID. Returns the employee object if found, or
+   * undefined if no employee matches the ID.
+   * 
+   * @param {number} id - The unique employee ID to search for
+   * @returns {Employee | undefined} The employee object or undefined if not found
+   * @memberof EmployeeService
+   * 
+   * @example
+   * ```typescript
+   * // Find specific employee
+   * const employee = this.employeeService.getEmployeeById(1);
+   * if (employee) {
+   *   console.log('Found employee:', employee.fullName);
+   * }
+   * 
+   * // Check if employee exists
+   * const employee = this.employeeService.getEmployeeById(999);
+   * if (!employee) {
+   *   console.log('Employee not found');
+   * }
+   * ```
+   */
   getEmployeeById(id: number): Employee | undefined {
     return this.employees.find((employee) => employee.id === id);
   }
