@@ -1,0 +1,187 @@
+<section id="projects-summary" class="py-8 px-4">
+  <div class="container mx-auto">
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Projects Summary</h2>
+      
+      <!-- Overall Totals Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Total Hours Card -->
+        <div class="card bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm opacity-90">Total Hours</p>
+              <p class="text-3xl font-bold">{{ overallTotals.totalHours }}</p>
+            </div>
+            <div class="text-4xl opacity-80">
+              <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Total Value Card -->
+        <div class="card bg-gradient-to-r from-green-500 to-green-600 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm opacity-90">Total Value</p>
+              <p class="text-3xl font-bold">{{ formatCurrency(overallTotals.totalValue) }}</p>
+            </div>
+            <div class="text-4xl opacity-80">
+              <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Total Employees Card -->
+        <div class="card bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm opacity-90">Total Employees</p>
+              <p class="text-3xl font-bold">{{ overallTotals.totalEmployees }}</p>
+            </div>
+            <div class="text-4xl opacity-80">
+              <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Chart Section -->
+    <div class="card mb-8">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Projects Overview Chart</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          Visual representation of total hours and monetary value for each project
+        </p>
+        
+        <!-- Chart Container -->
+        <div class="chart-container" style="height: 400px;">
+          <canvas #projectsChart></canvas>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Table Section -->
+    <div class="card">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Projects Summary Table</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          Detailed breakdown of hours, value, and employee metrics for each project
+        </p>
+        
+        <!-- Projects Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- Table Header -->
+            <thead class="bg-gray-50 dark:bg-gray-800">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Project
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Total Hours
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Total Value
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Employees
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Avg Hours/Employee
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Avg Value/Employee
+                </th>
+              </tr>
+            </thead>
+            
+            <!-- Table Body -->
+            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+              <!-- Show project data when available -->
+              @for (summary of projectSummaries; track summary.projectId) {
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                  <!-- Project Name -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900 dark:text-white">
+                      {{ summary.projectName }}
+                    </div>
+                  </td>
+                  
+                  <!-- Project Status -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ getStatusBadgeClass(summary.projectStatus) }}">
+                      {{ summary.projectStatus }}
+                    </span>
+                  </td>
+                  
+                  <!-- Total Hours -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white font-medium">
+                      {{ summary.totalHours }}
+                    </div>
+                  </td>
+                  
+                  <!-- Total Value -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white font-medium">
+                      {{ formatCurrency(summary.totalValue) }}
+                    </div>
+                  </td>
+                  
+                  <!-- Employee Count -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white">
+                      {{ summary.employeeCount }}
+                    </div>
+                  </td>
+                  
+                  <!-- Average Hours per Employee -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white">
+                      {{ summary.averageHoursPerEmployee | number:'1.0-1' }}
+                    </div>
+                  </td>
+                  
+                  <!-- Average Value per Employee -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white">
+                      {{ formatCurrency(summary.averageValuePerEmployee) }}
+                    </div>
+                  </td>
+                </tr>
+              }
+              
+              <!-- Show no data message when no projects -->
+              @if (projectSummaries.length === 0) {
+                <tr>
+                  <td colspan="7" class="px-6 py-12 text-center">
+                    <div class="flex flex-col items-center justify-center">
+                      <div class="text-gray-400 mb-4">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                      </div>
+                      <p class="text-lg font-medium text-gray-900 dark:text-white">No Data Available</p>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">No projects found. Please add some projects to see the summary data.</p>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
