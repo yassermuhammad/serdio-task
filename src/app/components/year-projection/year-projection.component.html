@@ -1,0 +1,227 @@
+<section id="year-projection" class="py-8 px-4">
+  <div class="container mx-auto">
+    <!-- Header Section -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Year Projection</h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
+        Projected hours and monetary value for the remainder of {{ currentDate.getFullYear() }}
+      </p>
+    </div>
+    
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Projected Hours -->
+      <div class="card bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm opacity-90">Total Projected Hours</p>
+            <p class="text-3xl font-bold">{{ yearProjection.totalProjectedHours | number:'1.0-0' }}</p>
+          </div>
+          <div class="text-4xl opacity-80">
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Total Projected Value -->
+      <div class="card bg-gradient-to-r from-green-500 to-green-600 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm opacity-90">Total Projected Value</p>
+            <p class="text-3xl font-bold">{{ formatCurrency(yearProjection.totalProjectedValue) }}</p>
+          </div>
+          <div class="text-4xl opacity-80">
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Active Projects -->
+      <div class="card bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm opacity-90">Active Projects</p>
+            <p class="text-3xl font-bold">{{ yearProjection.activeProjects }}</p>
+          </div>
+          <div class="text-4xl opacity-80">
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Active Employees -->
+      <div class="card bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm opacity-90">Active Employees</p>
+            <p class="text-3xl font-bold">{{ yearProjection.activeEmployees }}</p>
+          </div>
+          <div class="text-4xl opacity-80">
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Monthly Breakdown Section -->
+    <div class="card mb-8">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Monthly Breakdown</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          Projected hours and value for each remaining month of {{ currentDate.getFullYear() }}
+        </p>
+        
+        <!-- Monthly Breakdown Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- Table Header -->
+            <thead class="bg-gray-50 dark:bg-gray-800">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Month
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Projected Hours
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Projected Value
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Cumulative Hours
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Cumulative Value
+                </th>
+              </tr>
+            </thead>
+            
+            <!-- Table Body -->
+            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+              <!-- Show monthly data when available -->
+              @for (monthly of yearProjection.monthlyBreakdown; track monthly.month) {
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                  <!-- Month -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900 dark:text-white">
+                      {{ monthly.month }}
+                    </div>
+                  </td>
+                  
+                  <!-- Projected Hours -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white font-medium">
+                      {{ monthly.projectedHours | number:'1.0-0' }}
+                    </div>
+                  </td>
+                  
+                  <!-- Projected Value -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white font-medium">
+                      {{ formatCurrency(monthly.projectedValue) }}
+                    </div>
+                  </td>
+                  
+                  <!-- Cumulative Hours -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white">
+                      {{ monthly.cumulativeHours | number:'1.0-0' }}
+                    </div>
+                  </td>
+                  
+                  <!-- Cumulative Value -->
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 dark:text-white">
+                      {{ formatCurrency(monthly.cumulativeValue) }}
+                    </div>
+                  </td>
+                </tr>
+              }
+              
+              <!-- Show no data message when no monthly breakdown -->
+              @if (yearProjection.monthlyBreakdown.length === 0) {
+                <tr>
+                  <td colspan="5" class="px-6 py-12 text-center">
+                    <div class="flex flex-col items-center justify-center">
+                      <div class="text-gray-400 mb-4">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                      </div>
+                      <p class="text-lg font-medium text-gray-900 dark:text-white">No Projection Data</p>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">No monthly breakdown available for the current year.</p>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Active Projects Section -->
+    <div class="card">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Active Projects</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          Projects that will continue into the remainder of {{ currentDate.getFullYear() }}
+        </p>
+        
+        <!-- Active Projects Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Show active projects when available -->
+          @for (project of getActiveProjects(); track project.id) {
+            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow">
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
+                  {{ project.name }}
+                </h4>
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ getStatusBadgeClass(project.status) }}">
+                  {{ project.status }}
+                </span>
+              </div>
+              
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                {{ project.description }}
+              </p>
+              
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-500 dark:text-gray-400">Start Date:</span>
+                  <span class="text-gray-900 dark:text-white">{{ project.startDate | date:'MMM dd, yyyy' }}</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span class="text-gray-500 dark:text-gray-400">End Date:</span>
+                  <span class="text-gray-900 dark:text-white">{{ project.endDate | date:'MMM dd, yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+          }
+          
+          <!-- Show no active projects message -->
+          @if (getActiveProjects().length === 0) {
+            <div class="col-span-full">
+              <div class="text-center py-12">
+                <div class="text-gray-400 mb-4">
+                  <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                  </svg>
+                </div>
+                <p class="text-lg font-medium text-gray-900 dark:text-white">No Active Projects</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">All projects are completed or no projects are available.</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
