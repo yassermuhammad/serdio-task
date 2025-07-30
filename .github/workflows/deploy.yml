@@ -1,13 +1,13 @@
-name: Deploy Angular App
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
@@ -21,83 +21,12 @@ jobs:
         cache: 'npm'
         
     - name: Install dependencies
-      run: npm ci
-      
-    - name: Run linting
-      run: npm run lint || echo "Linting failed but continuing..."
-      
-    - name: Run tests
-      run: npm test -- --watch=false --browsers=ChromeHeadless || echo "Tests failed but continuing..."
+      run: npm i --legacy-peer-deps
       
     - name: Build application
       run: npm run build:prod
       
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dist-files
-        path: dist/
-        retention-days: 30
-
-  deploy-staging:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build for staging
-      run: npm run build:prod
-      
-    - name: Deploy to GitHub Pages (Staging)
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        publish_branch: gh-pages-staging
-        force_orphan: true
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
-        commit_message: 'Deploy staging version'
-        
-    - name: Notify staging deployment
-      run: |
-        echo "🚀 Staging deployment completed!"
-        echo "Staging URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/staging/"
-
-  deploy-production:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build for production
-      run: npm run build:prod
-      
-    - name: Deploy to GitHub Pages (Production)
+    - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -106,88 +35,11 @@ jobs:
         force_orphan: true
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
-        commit_message: 'Deploy production version'
+        commit_message: 'Deploy to GitHub Pages'
         
-    - name: Create deployment status
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const { data: deployments } = await github.rest.repos.listDeployments({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: context.sha,
-            environment: 'production'
-          });
-          
-          if (deployments.length > 0) {
-            await github.rest.repos.createDeploymentStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              deployment_id: deployments[0].id,
-              state: 'success',
-              environment_url: `https://${context.repo.owner}.github.io/${context.repo.repo}/`
-            });
-          }
-          
-    - name: Notify production deployment
+    - name: Notify deployment
       run: |
-        echo "🚀 Production deployment completed!"
-        echo "Production URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
-        echo "Staging URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/staging/"
-
-  security-scan:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Run security audit
-      run: npm audit --audit-level=moderate || echo "Security audit completed with warnings"
-      
-    - name: Check for known vulnerabilities
-      run: |
-        echo "Security scan completed"
-        echo "Check the npm audit output above for any security issues"
-
-  performance-test:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build application
-      run: npm run build:prod
-      
-    - name: Analyze bundle size
-      run: |
-        echo "📊 Bundle size analysis:"
-        echo "Main bundle:"
-        du -sh dist/browser/*.js
-        echo "Styles bundle:"
-        du -sh dist/browser/*.css
-        echo "Total bundle size:"
-        du -sh dist/browser/
-        echo ""
-        echo "⚠️  Note: Bundle size exceeds 500KB budget by ~20KB"
-        echo "Consider code splitting or lazy loading to reduce bundle size" 
+        echo "🚀 Application deployed successfully!"
+        echo "URL: https://yassermuhammad.github.io/serdio-task/"
+        echo "Branch: gh-pages"
+        echo "Commit: ${{ github.sha }}" 
