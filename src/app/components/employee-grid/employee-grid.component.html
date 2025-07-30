@@ -39,7 +39,7 @@
             </thead>
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
               <!-- Show employee data when available -->
-              @for (employee of employees; track employee.id) {
+              @for (employee of displayedEmployees; track employee.id) {
               <tr class="table-row">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
@@ -80,6 +80,54 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        
+        <!-- Pagination Controls -->
+        <div *ngIf="employees.length > 0" class="bg-white dark:bg-gray-800 px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <!-- Page Info -->
+            <div class="text-sm text-gray-700 dark:text-gray-300">
+              Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ Math.min(currentPage * itemsPerPage, employees.length) }} of {{ employees.length }} employees
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div class="flex items-center space-x-2">
+              <!-- Previous Button -->
+              <button 
+                (click)="goToPreviousPage()"
+                [disabled]="currentPage === 1"
+                class="btn-secondary px-3 py-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+              </button>
+              
+              <!-- Page Numbers -->
+              <div class="flex items-center space-x-1">
+                @for (page of getPageNumbers(); track page) {
+                  <button 
+                    (click)="goToPage(page)"
+                    [class]="page === currentPage ? 'bg-primary-600 text-white' : 'btn-secondary text-gray-700 dark:text-gray-300'"
+                    class="px-3 py-1 text-sm rounded-md transition-colors duration-200"
+                  >
+                    {{ page }}
+                  </button>
+                }
+              </div>
+              
+              <!-- Next Button -->
+              <button 
+                (click)="goToNextPage()"
+                [disabled]="currentPage === totalPages"
+                class="btn-secondary px-3 py-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

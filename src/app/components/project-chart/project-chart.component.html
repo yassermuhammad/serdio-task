@@ -1,0 +1,49 @@
+<section id="project-breakdown" class="py-8 px-4">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Project Breakdown</h2>
+      
+      <!-- Project Selector -->
+      <div class="card mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div class="mb-4 md:mb-0">
+            <label for="project-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Select Project
+            </label>
+            <select 
+              id="project-select"
+              [(ngModel)]="selectedProject" 
+              (ngModelChange)="onProjectChange()"
+              class="input-field w-full md:w-64"
+            >
+              <option *ngFor="let project of projects" [value]="project.id">
+                {{ project.name }}
+              </option>
+            </select>
+          </div>
+          
+          <!-- Project Stats -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center">
+              <p class="text-sm text-gray-600 dark:text-gray-400">Total Hours</p>
+              <p class="text-xl font-bold text-blue-600 dark:text-blue-400">{{ getProjectTotalHours() }}</p>
+            </div>
+            <div class="text-center">
+              <p class="text-sm text-gray-600 dark:text-gray-400">Total Value</p>
+              <p class="text-xl font-bold text-green-600 dark:text-green-400">{{ formatCurrency(getProjectTotalValue()) }}</p>
+            </div>
+            <div class="text-center">
+              <p class="text-sm text-gray-600 dark:text-gray-400">Employees</p>
+              <p class="text-xl font-bold text-purple-600 dark:text-purple-400">{{ getProjectEmployeeCount() }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Chart Container -->
+      <div class="card">
+        <div class="chart-container" style="height: 400px;">
+          <canvas #projectChart></canvas>
+        </div>
+      </div>
+    </div>
+  </section> 
