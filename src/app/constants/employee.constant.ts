@@ -1,22 +1,19 @@
 /**
- * Constants defining the column headers for the employee grid.
+ * Constants for employee grid column definitions.
  * 
- * This array contains the display names for the columns in the
- * employee grid component. The order of these columns corresponds
- * to the data structure and display layout of the employee table.
+ * This array defines the column headers displayed in the employee grid
+ * component. The order and labels correspond to the data structure
+ * used in the employee grid table.
  * 
  * @constant {string[]} EMPLOYEE_GRID_COLUMNS
- * @memberof EmployeeConstants
  * 
  * @example
  * ```typescript
  * // Use in employee grid component
  * displayedColumns = EMPLOYEE_GRID_COLUMNS;
  * 
- * // Access specific column
- * const employeeColumn = EMPLOYEE_GRID_COLUMNS[0]; // 'Employee'
- * const salaryColumn = EMPLOYEE_GRID_COLUMNS[1]; // 'Annual Salary'
- * const rateColumn = EMPLOYEE_GRID_COLUMNS[2]; // 'Hourly Rate'
+ * // Template usage
+ * <th *ngFor="let column of displayedColumns">{{ column }}</th>
  * ```
  * 
  * @author Yasser Abdel-Maksoud

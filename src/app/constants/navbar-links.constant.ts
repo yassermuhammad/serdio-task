@@ -3,27 +3,24 @@ import { NavbarLink } from "@models/navbar-links.model";
 /**
  * Navigation links configuration for the application navbar.
  * 
- * This array defines the navigation structure for the main application
- * navbar. Each link contains a display label and an anchor reference
- * for smooth scrolling to the corresponding section.
+ * This array defines the navigation items that appear in the main
+ * navigation bar. Each link includes a display label and an anchor
+ * ID for smooth scrolling to the corresponding section.
  * 
  * @constant {NavbarLink[]} NAV_LINKS
- * @memberof NavbarConstants
  * 
  * @example
  * ```typescript
  * // Use in navbar component
- * navbarLinks = NAV_LINKS;
+ * import { NAV_LINKS } from '@constants/navbar-links.constant';
  * 
- * // Access specific link
- * const employeeLink = NAV_LINKS[0];
- * console.log(employeeLink.label); // 'Employee Grid'
- * console.log(employeeLink.anchor); // 'employee-grid'
- * 
- * // Iterate through links
- * NAV_LINKS.forEach(link => {
- *   console.log(`${link.label}: ${link.anchor}`);
- * });
+ * // Template usage
+ * <nav>
+ *   <a *ngFor="let link of navLinks" 
+ *      [href]="'#' + link.anchor">
+ *     {{ link.label }}
+ *   </a>
+ * </nav>
  * ```
  * 
  * @author Yasser Abdel-Maksoud

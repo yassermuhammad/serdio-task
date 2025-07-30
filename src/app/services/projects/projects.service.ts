@@ -2,6 +2,34 @@ import { Injectable } from '@angular/core';
 import { Project, ProjectWorkData } from '@models/project.model';
 import { of } from 'rxjs';
 
+/**
+ * ProjectsService manages project data and work allocation information
+ * for the timesheet dashboard application.
+ * 
+ * This service provides comprehensive project management functionality
+ * including project information, work data, and employee-project
+ * assignments. It contains mock data for 5 projects with realistic
+ * work allocation data for 25 employees across different projects.
+ * 
+ * @example
+ * ```typescript
+ * // Inject the service
+ * constructor(private projectsService: ProjectsService) {}
+ * 
+ * // Get all projects
+ * this.projectsService.getProjects().subscribe(projects => {
+ *   console.log('Projects:', projects);
+ * });
+ * 
+ * // Get work data for specific project
+ * this.projectsService.getWorkDataByProject(1).subscribe(workData => {
+ *   console.log('Project work data:', workData);
+ * });
+ * ```
+ * 
+ * @author Yasser Abdel-Maksoud
+ * @since 1.0.0
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +40,7 @@ export class ProjectsService {
    * 
    * This array contains project information for various development
    * and business projects with different scopes and requirements.
+   * Each project includes id, name, description, status, and dates.
    * 
    * @type {Project[]}
    * @private
@@ -65,7 +94,8 @@ export class ProjectsService {
    * 
    * This array contains work allocation data for all 25 employees
    * across the 5 projects, with realistic hours and monetary values
-   * based on employee hourly rates.
+   * based on employee hourly rates. Each entry represents an
+   * employee's work on a specific project.
    * 
    * @type {ProjectWorkData[]}
    * @private
@@ -133,13 +163,39 @@ export class ProjectsService {
     { projectId: 5, employeeId: 25, hoursWorked: 80, monetaryValue: 3576.80 }
   ];
 
+  /**
+   * Initializes the ProjectsService.
+   * 
+   * The constructor initializes the service and prepares
+   * the project and work data for use throughout the application.
+   * 
+   * @memberof ProjectsService
+   */
   constructor() { }
 
   /**
    * Gets all projects as an observable.
    * 
+   * Returns an observable that emits the complete array of projects.
+   * Components can subscribe to this observable to receive project
+   * data updates in real-time.
+   * 
    * @returns {Observable<Project[]>} Observable of all projects
    * @memberof ProjectsService
+   * 
+   * @example
+   * ```typescript
+   * // Subscribe to project data
+   * this.projectsService.getProjects().subscribe(projects => {
+   *   this.projects = projects;
+   *   this.updateProjectList();
+   * });
+   * 
+   * // Use in component
+   * this.projectsService.getProjects().subscribe(projects => {
+   *   this.availableProjects = projects.filter(p => p.status === 'In Progress');
+   * });
+   * ```
    */
   getProjects() {
     return of(this.projects);
@@ -148,8 +204,20 @@ export class ProjectsService {
   /**
    * Gets all work data as an observable.
    * 
+   * Returns an observable that emits the complete array of work data
+   * containing employee-project assignments with hours and monetary values.
+   * 
    * @returns {Observable<ProjectWorkData[]>} Observable of all work data
    * @memberof ProjectsService
+   * 
+   * @example
+   * ```typescript
+   * // Subscribe to work data
+   * this.projectsService.getWorkData().subscribe(workData => {
+   *   this.totalHours = workData.reduce((sum, work) => sum + work.hoursWorked, 0);
+   *   this.totalValue = workData.reduce((sum, work) => sum + work.monetaryValue, 0);
+   * });
+   * ```
    */
   getWorkData() {
     return of(this.workData);
@@ -158,9 +226,22 @@ export class ProjectsService {
   /**
    * Gets work data for a specific project.
    * 
+   * Filters the work data to return only entries for the specified
+   * project ID. Useful for project-specific analytics and reporting.
+   * 
    * @param {number} projectId - The project ID to filter by
    * @returns {Observable<ProjectWorkData[]>} Observable of work data for the project
    * @memberof ProjectsService
+   * 
+   * @example
+   * ```typescript
+   * // Get work data for specific project
+   * this.projectsService.getWorkDataByProject(1).subscribe(workData => {
+   *   const projectHours = workData.reduce((sum, work) => sum + work.hoursWorked, 0);
+   *   const projectValue = workData.reduce((sum, work) => sum + work.monetaryValue, 0);
+   *   console.log(`Project hours: ${projectHours}, Value: $${projectValue}`);
+   * });
+   * ```
    */
   getWorkDataByProject(projectId: number) {
     const filteredData = this.workData.filter(work => work.projectId === projectId);
@@ -170,9 +251,22 @@ export class ProjectsService {
   /**
    * Gets work data for a specific employee.
    * 
+   * Filters the work data to return only entries for the specified
+   * employee ID. Useful for employee-specific analytics and reporting.
+   * 
    * @param {number} employeeId - The employee ID to filter by
    * @returns {Observable<ProjectWorkData[]>} Observable of work data for the employee
    * @memberof ProjectsService
+   * 
+   * @example
+   * ```typescript
+   * // Get work data for specific employee
+   * this.projectsService.getWorkDataByEmployee(1).subscribe(workData => {
+   *   const employeeHours = workData.reduce((sum, work) => sum + work.hoursWorked, 0);
+   *   const employeeValue = workData.reduce((sum, work) => sum + work.monetaryValue, 0);
+   *   console.log(`Employee hours: ${employeeHours}, Value: $${employeeValue}`);
+   * });
+   * ```
    */
   getWorkDataByEmployee(employeeId: number) {
     const filteredData = this.workData.filter(work => work.employeeId === employeeId);
@@ -182,9 +276,28 @@ export class ProjectsService {
   /**
    * Gets a specific project by ID.
    * 
-   * @param {number} id - The project ID
+   * Searches through the projects array to find a project with the
+   * specified ID. Returns undefined if no project is found.
+   * 
+   * @param {number} id - The project ID to search for
    * @returns {Observable<Project | undefined>} Observable of the project or undefined
    * @memberof ProjectsService
+   * 
+   * @example
+   * ```typescript
+   * // Get specific project
+   * this.projectsService.getProjectById(1).subscribe(project => {
+   *   if (project) {
+   *     console.log('Project found:', project.name);
+   *     this.displayProjectDetails(project);
+   *   }
+   * });
+   * 
+   * // Use in component
+   * this.projectsService.getProjectById(this.selectedProjectId).subscribe(project => {
+   *   this.currentProject = project;
+   * });
+   * ```
    */
   getProjectById(id: number) {
     const project = this.projects.find(p => p.id === id);

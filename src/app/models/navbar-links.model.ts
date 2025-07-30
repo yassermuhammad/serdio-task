@@ -1,13 +1,13 @@
 /**
- * Interface representing a navigation link in the application navbar.
+ * Interface representing navigation links for the application navbar.
  * 
- * This interface defines the structure for navigation links used
- * throughout the application's navigation system. Each link contains
- * a display label and an anchor reference for smooth scrolling.
+ * This interface defines the structure for navigation items in the
+ * application's navigation bar, including the display label and
+ * anchor link for smooth scrolling to sections.
  * 
  * @interface NavbarLink
  * @property {string} label - Display text for the navigation link
- * @property {string} anchor - Anchor reference for smooth scrolling to section
+ * @property {string} anchor - Anchor ID for smooth scrolling to section
  * 
  * @example
  * ```typescript
@@ -16,12 +16,11 @@
  *   anchor: 'employee-grid'
  * };
  * 
- * // Usage in navigation
+ * // Usage in navbar component
  * const navbarLinks: NavbarLink[] = [
  *   { label: 'Employee Grid', anchor: 'employee-grid' },
- *   { label: 'Project Breakdown', anchor: 'project-chart' },
- *   { label: 'Projects Summary', anchor: 'projects-summary' },
- *   { label: 'Year Projection', anchor: 'year-projection' }
+ *   { label: 'Project Chart', anchor: 'project-chart' },
+ *   { label: 'Projects Summary', anchor: 'projects-summary' }
  * ];
  * ```
  * 

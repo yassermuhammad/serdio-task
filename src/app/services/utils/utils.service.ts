@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
  * UtilsService provides utility functions for common operations
  * such as currency formatting and data formatting across the application.
  * 
- * This service centralizes common formatting operations to ensure
- * consistency across all components and reduce code duplication.
+ * This service contains reusable utility methods that can be injected
+ * into any component or service that needs formatting capabilities.
  * 
  * @example
  * ```typescript
@@ -33,9 +33,8 @@ export class UtilsService {
    * Formats a numeric amount as currency for display.
    * 
    * Converts a number to a properly formatted currency string with
-   * appropriate symbols, commas, and decimal places based on the
-   * US locale. Used for displaying monetary values throughout the
-   * application.
+   * appropriate symbols, commas, and decimal places based on the US locale.
+   * Used for displaying monetary values throughout the application.
    * 
    * @param {number} amount - The numeric amount to format as currency
    * @returns {string} Formatted currency string (e.g., "$75,000.00")
@@ -52,8 +51,8 @@ export class UtilsService {
    * // Returns: "$125,000.00"
    * 
    * // Format small amounts
-   * const smallAmount = this.utilsService.formatCurrency(42.50);
-   * // Returns: "$42.50"
+   * const smallAmount = this.utilsService.formatCurrency(25.50);
+   * // Returns: "$25.50"
    * ```
    */
   formatCurrency(amount: number): string {
@@ -67,10 +66,10 @@ export class UtilsService {
    * Formats an hourly rate as currency with consistent decimal places.
    * 
    * Converts a numeric hourly rate to a formatted currency string
-   * with exactly 2 decimal places. This ensures consistent display
+   * with exactly 2 decimal places, ensuring consistent display
    * of hourly rates across the application.
    * 
-   * @param {number} rate - The hourly rate to format (e.g., 36.06)
+   * @param {number} rate - The hourly rate to format as currency
    * @returns {string} Formatted hourly rate string (e.g., "$36.06")
    * @memberof UtilsService
    * 
@@ -81,12 +80,12 @@ export class UtilsService {
    * // Returns: "$36.06"
    * 
    * // Format consultant rate
-   * const consultantRate = this.utilsService.formatHourlyRate(125.50);
-   * // Returns: "$125.50"
+   * const consultantRate = this.utilsService.formatHourlyRate(125.00);
+   * // Returns: "$125.00"
    * 
-   * // Format with trailing zeros
-   * const rateWithZeros = this.utilsService.formatHourlyRate(40.00);
-   * // Returns: "$40.00"
+   * // Format with decimal
+   * const decimalRate = this.utilsService.formatHourlyRate(42.50);
+   * // Returns: "$42.50"
    * ```
    */
   formatHourlyRate(rate: number): string {

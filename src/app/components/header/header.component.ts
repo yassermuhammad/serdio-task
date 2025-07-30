@@ -5,15 +5,15 @@ import { ThemeService } from '@services/theme/theme.service';
 
 /**
  * HeaderComponent provides the main application header with user information,
- * theme controls, and navigation elements.
+ * theme toggle functionality, and navigation controls.
  * 
  * This component displays the application title, current user information,
- * theme toggle functionality, and user menu with various actions. It integrates
- * with the ThemeService for theme management and provides a clean header interface.
+ * theme toggle button, and user menu with various actions. It integrates
+ * with the ThemeService for dark/light mode switching and manages user
+ * interface interactions.
  * 
  * @example
  * ```html
- * <!-- Use in main app template -->
  * <sred-ts-header></sred-ts-header>
  * ```
  * 
@@ -29,10 +29,11 @@ import { ThemeService } from '@services/theme/theme.service';
 })
 export class HeaderComponent {
   /**
-   * Current user instance with profile information.
+   * Current user information for the application.
    * 
-   * Contains user data including name, email, avatar, role, and
-   * generated initials for display purposes.
+   * Contains user details including name, email, avatar, and role.
+   * This user object is used throughout the header for display
+   * and user-specific functionality.
    * 
    * @type {User}
    * @memberof HeaderComponent
@@ -42,13 +43,19 @@ export class HeaderComponent {
   /**
    * Application client name displayed in the header.
    * 
+   * The main application title that appears in the header
+   * to identify the application to users.
+   * 
    * @type {string}
    * @memberof HeaderComponent
    */
   clientName: string = 'Sredio Timesheet Dashboard';
 
   /**
-   * Application client information displayed in the header.
+   * Application description displayed in the header.
+   * 
+   * A brief description of the application's purpose and
+   * functionality that appears below the main title.
    * 
    * @type {string}
    * @memberof HeaderComponent
@@ -56,7 +63,10 @@ export class HeaderComponent {
   clientInfo: string = 'Financial Analytics & Project Management';
 
   /**
-   * Current date formatted for display in the header.
+   * Current date formatted for display.
+   * 
+   * The current date formatted according to the user's locale
+   * for display in the header.
    * 
    * @type {string}
    * @memberof HeaderComponent
@@ -64,7 +74,10 @@ export class HeaderComponent {
   currentDate: string = new Date().toLocaleDateString();
 
   /**
-   * Flag controlling the visibility of the user menu dropdown.
+   * Controls the visibility of the user menu dropdown.
+   * 
+   * Boolean flag that determines whether the user menu
+   * is currently visible or hidden.
    * 
    * @type {boolean}
    * @memberof HeaderComponent
@@ -72,7 +85,10 @@ export class HeaderComponent {
   showUserMenu: boolean = false;
 
   /**
-   * Injected theme service for theme management functionality.
+   * Injected theme service for theme management.
+   * 
+   * Service instance for handling theme switching between
+   * light and dark modes throughout the application.
    * 
    * @type {ThemeService}
    * @memberof HeaderComponent
@@ -80,13 +96,13 @@ export class HeaderComponent {
   themeService: ThemeService = inject(ThemeService);
 
   /**
-   * Handles document click events to close the user menu when clicking outside.
+   * Handles document click events to close the user menu.
    * 
-   * This method is used to implement click-outside behavior for the user menu.
-   * It checks if the click target is outside the user menu container and closes
-   * the menu if so.
+   * This method is called when a click event occurs on the document.
+   * It checks if the click target is outside the user menu container
+   * and closes the menu if it is, providing a better user experience.
    * 
-   * @param {Event} event - The click event object
+   * @param {Event} event - The click event that occurred
    * @returns {void}
    * @memberof HeaderComponent
    * 
@@ -109,18 +125,17 @@ export class HeaderComponent {
   /**
    * Toggles the application theme between light and dark modes.
    * 
-   * Delegates to the ThemeService to switch between light and dark themes.
-   * The theme change is automatically persisted and applied throughout the application.
+   * Calls the theme service to switch between light and dark themes.
+   * This method is typically called from a theme toggle button in
+   * the header template.
    * 
    * @returns {void}
    * @memberof HeaderComponent
    * 
    * @example
    * ```typescript
-   * // Called from theme toggle button
-   * onThemeToggle(): void {
-   *   this.toggleTheme();
-   * }
+   * // Called from template button click
+   * <button (click)="toggleTheme()">Toggle Theme</button>
    * ```
    */
   toggleTheme(): void {
@@ -130,18 +145,16 @@ export class HeaderComponent {
   /**
    * Toggles the visibility of the user menu dropdown.
    * 
-   * Switches the showUserMenu flag between true and false to show or hide
-   * the user menu dropdown in the header.
+   * Switches the showUserMenu boolean between true and false,
+   * controlling whether the user menu is displayed or hidden.
    * 
    * @returns {void}
    * @memberof HeaderComponent
    * 
    * @example
    * ```typescript
-   * // Called from user avatar click
-   * onUserAvatarClick(): void {
-   *   this.toggleUserMenu();
-   * }
+   * // Called from template button click
+   * <button (click)="toggleUserMenu()">User Menu</button>
    * ```
    */
   toggleUserMenu(): void {
@@ -151,7 +164,8 @@ export class HeaderComponent {
   /**
    * Closes the user menu dropdown.
    * 
-   * Sets the showUserMenu flag to false to hide the user menu dropdown.
+   * Sets the showUserMenu boolean to false, hiding the
+   * user menu dropdown.
    * 
    * @returns {void}
    * @memberof HeaderComponent
@@ -159,11 +173,7 @@ export class HeaderComponent {
    * @example
    * ```typescript
    * // Called when clicking outside menu
-   * onDocumentClick(event: Event): void {
-   *   if (!target.closest('.user-menu-container')) {
-   *     this.closeUserMenu();
-   *   }
-   * }
+   * this.closeUserMenu();
    * ```
    */
   closeUserMenu(): void {
@@ -173,23 +183,20 @@ export class HeaderComponent {
   /**
    * Handles user menu action selections.
    * 
-   * Processes user actions from the dropdown menu such as profile,
-   * settings, logout, etc. Currently logs the action and closes the menu.
+   * Processes actions selected from the user menu dropdown.
+   * Currently logs the action and closes the menu. Can be
+   * extended to handle specific user actions like logout,
+   * profile editing, etc.
    * 
-   * @param {string} action - The action string (e.g., 'profile', 'settings', 'logout')
+   * @param {string} action - The action selected from the user menu
    * @returns {void}
    * @memberof HeaderComponent
    * 
    * @example
    * ```typescript
-   * // Called from menu item click
-   * onMenuAction(action: string): void {
-   *   this.onUserAction(action);
-   * }
-   * 
-   * // Usage
-   * this.onUserAction('logout');
-   * // Logs: "User action: logout"
+   * // Called from template menu items
+   * <button (click)="onUserAction('logout')">Logout</button>
+   * <button (click)="onUserAction('profile')">Profile</button>
    * ```
    */
   onUserAction(action: string): void {
@@ -198,10 +205,11 @@ export class HeaderComponent {
   }
 
   /**
-   * Gets mock user data for demonstration purposes.
+   * Gets mock user data for the application.
    * 
-   * Returns a mock user object with sample data for testing and
-   * demonstration of the header component functionality.
+   * Returns a mock user object with sample data for development
+   * and testing purposes. In a real application, this would
+   * typically come from an authentication service or API.
    * 
    * @returns {IUser} Mock user data object
    * @memberof HeaderComponent
@@ -211,14 +219,6 @@ export class HeaderComponent {
    * // Get user data for initialization
    * const userData = this.getUserData();
    * this.user = new User(userData);
-   * 
-   * // Mock data structure
-   * {
-   *   name: 'John Doe',
-   *   email: 'john.doe@example.com',
-   *   avatar: 'https://via.placeholder.com/150',
-   *   role: 'Admin'
-   * }
    * ```
    */
   getUserData(): IUser {

@@ -1,27 +1,30 @@
 /**
- * Project status configuration for visual indicators and styling.
+ * Project status configuration for styling and display.
  * 
- * This object defines the status types and their corresponding
- * display labels and color schemes used throughout the application
- * for project status indicators and badges.
+ * This object defines the available project statuses with their
+ * corresponding display labels and color schemes. Used throughout
+ * the application for consistent project status styling and
+ * visual indicators.
  * 
  * @constant {Object} PROJECT_STATUS
- * @memberof ProjectConstants
+ * @property {Object} COMPLETED - Completed project status
+ * @property {Object} IN_PROGRESS - In progress project status
+ * @property {Object} PLANNING - Planning project status
  * 
  * @example
  * ```typescript
- * // Get status configuration
- * const completedStatus = PROJECT_STATUS.COMPLETED;
- * console.log(completedStatus.label); // 'Completed'
- * console.log(completedStatus.color); // 'green'
+ * // Use in component
+ * import { PROJECT_STATUS } from '@constants/project-status.constant';
  * 
- * // Use in component for styling
- * const statusClass = `bg-${PROJECT_STATUS.IN_PROGRESS.color}-100`;
- * // Returns: 'bg-yellow-100'
+ * // Get status styling
+ * const status = PROJECT_STATUS.COMPLETED;
+ * console.log(status.label); // 'Completed'
+ * console.log(status.color); // 'green'
  * 
- * // Check project status
- * const projectStatus = 'completed';
- * const statusConfig = PROJECT_STATUS[projectStatus.toUpperCase()];
+ * // Use in template
+ * <span [class]="'status-' + PROJECT_STATUS[project.status].color">
+ *   {{ PROJECT_STATUS[project.status].label }}
+ * </span>
  * ```
  * 
  * @author Yasser Abdel-Maksoud

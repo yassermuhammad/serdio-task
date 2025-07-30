@@ -1,18 +1,18 @@
 import { UtilsService } from '@services/utils/utils.service';
 
 /**
- * Interface representing user data in the application.
+ * Interface representing user information in the application.
  * 
- * This interface defines the structure for user information including
- * personal details, authentication data, and display preferences.
- * Used for user management and profile display throughout the application.
+ * This interface defines the structure for user data including
+ * personal information, authentication details, and display preferences.
+ * Used for user management and header display functionality.
  * 
  * @interface IUser
  * @property {string} name - User's full name
  * @property {string} email - User's email address
  * @property {string} avatar - URL to user's avatar image
- * @property {string} role - User's role in the system
- * @property {string} [initials] - Optional user initials for display
+ * @property {string} role - User's role in the application
+ * @property {string} [initials] - User's initials (optional)
  * 
  * @example
  * ```typescript
@@ -37,18 +37,18 @@ export interface IUser {
 }
 
 /**
- * User class that wraps user data and provides utility methods.
+ * User class for managing user information and functionality.
  * 
- * This class extends the IUser interface and provides additional
- * functionality such as generating user initials and managing
- * user-related operations. Used for user display and management.
+ * This class provides a structured way to handle user data with
+ * additional functionality like generating initials from the user's name.
+ * It wraps the IUser interface and adds computed properties.
  * 
  * @class User
  * @implements {IUser}
  * 
  * @example
  * ```typescript
- * // Create user from interface data
+ * // Create user instance
  * const userData: IUser = {
  *   name: 'John Doe',
  *   email: 'john.doe@example.com',
@@ -57,7 +57,7 @@ export interface IUser {
  * };
  * 
  * const user = new User(userData);
- * console.log(user.initials); // 'JD'
+ * console.log(user.initials); // Output: 'JD'
  * ```
  * 
  * @author Yasser Abdel-Maksoud
@@ -89,7 +89,7 @@ export class User {
   avatar: string;
 
   /**
-   * User's initials generated from their name.
+   * User's computed initials from their name.
    * 
    * @type {string}
    * @memberof User
@@ -97,7 +97,7 @@ export class User {
   initials: string;
 
   /**
-   * User's role in the system.
+   * User's role in the application.
    * 
    * @type {string}
    * @memberof User
@@ -105,13 +105,12 @@ export class User {
   role: string;
 
   /**
-   * Initializes a new User instance with the provided user data.
+   * Initializes a new User instance.
    * 
-   * The constructor takes an IUser object and initializes all
-   * properties, including generating the user's initials from
-   * their full name.
+   * Creates a new User object with the provided user data and
+   * automatically generates initials from the user's name.
    * 
-   * @param {IUser} user - User data to initialize the User instance
+   * @param {IUser} user - User data object
    * @memberof User
    * 
    * @example
@@ -124,8 +123,6 @@ export class User {
    * };
    * 
    * const user = new User(userData);
-   * // user.name = 'John Doe'
-   * // user.initials = 'JD'
    * ```
    */
   constructor(private user: IUser) {
@@ -137,24 +134,23 @@ export class User {
   }
 
   /**
-   * Generates user initials from their full name.
+   * Generates initials from a full name.
    * 
-   * Takes a full name and extracts the first letter of each word,
-   * converting them to uppercase. This is used for avatar fallbacks
-   * and user identification.
+   * Takes a full name string and extracts the first letter of each
+   * word to create initials. The result is converted to uppercase.
    * 
-   * @param {string} name - Full name to generate initials from
+   * @param {string} name - The full name to generate initials from
    * @returns {string} Uppercase initials (e.g., 'JD' for 'John Doe')
    * @memberof User
    * 
    * @example
    * ```typescript
-   * const user = new User(userData);
-   * const initials = user.getInitials('John Doe');
-   * console.log(initials); // 'JD'
+   * // Generate initials
+   * const initials = this.getInitials('John Doe'); // Returns: 'JD'
+   * const initials2 = this.getInitials('Mary Jane Smith'); // Returns: 'MJS'
    * 
-   * const initials2 = user.getInitials('Mary Jane Wilson');
-   * console.log(initials2); // 'MJW'
+   * // Use in template
+   * <div class="user-initials">{{ user.initials }}</div>
    * ```
    */
   getInitials(name: string): string {
